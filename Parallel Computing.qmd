@@ -1,0 +1,144 @@
+---
+title: "Parallel Computing"
+author: "Aphinda Jabe"
+format: html
+editor: visual
+---
+
+```{r}
+#| warning: false
+#| message: false
+
+library(foreach)
+library(doParallel)
+library(MASS)
+library(parallel)
+library(iterators)
+library(flextable)
+```
+
+## Question 1
+
+```{r}
+
+mean_vect <- function(x){
+  return(mean(x))
+}
+
+var_vect <- function(x){
+  return(var(x))
+}
+
+rand_exp <- foreach(i = 1:100, .combine = rbind) %do% { 
+  s <- rexp(100)
+  c(Mean = mean_vect(s), Variance = var_vect(s))
+}
+
+flextable(as.data.frame(rand_exp))
+```
+
+## Question 2
+
+```{r}
+#|warning: false
+ 
+clusts <- makeCluster(3)
+registerDoParallel(clusts)
+
+system.time({
+boot_result <- foreach(i = 1:1000,.combine = c, .packages = 'MASS') %dopar% { 
+  median(sample(galaxies, size = length(galaxies), replace = TRUE))}
+
+})
+
+stopCluster(clusts)
+boot_median <- mean(boot_result)
+boot_median
+```
+
+**Testing with bigger chunks**
+
+```{r}
+
+clusts_2 <- makeCluster(3)
+registerDoParallel(clusts_2)
+
+system.time({
+boot_result <- foreach(i = 1:10,.combine = c, .packages = 'MASS') %dopar% {
+  replicate(100,
+  median(sample(galaxies, size = length(galaxies), replace = TRUE))
+)}
+
+})
+
+stopCluster(clusts_2)
+boot_median <- mean(boot_result)
+boot_median
+```
+
+Increasing the size of the chunks reduced the overheads, making it more efficient compared to running individual bootstrap iterations.
+
+## Question 3
+
+```{r}
+
+true_mean = 1
+
+coverage <- replicate(1000, {
+boot_s <- rexp(50)
+boot_means <- replicate(1000, 
+  mean(sample(boot_s, 50, replace = TRUE)))
+
+CI <- quantile(boot_means, probs = c(0.025, 0.975))
+
+(true_mean >= CI[1]) & (true_mean <= CI[2])} )
+
+mean(coverage)
+
+```
+
+## Question 4
+
+```{r}
+set.seed(1234)
+
+
+system.time({
+outcome <- foreach(x = irnorm(5, count = 3), .combine = c) %do% {max(x)}
+
+})
+outcome
+```
+
+## Question 5
+
+**Using the parLapply() to solve Q4**
+
+```{r}
+
+
+cl <- makeCluster(3)
+
+system.time({
+c <- parLapply(cl, 1:3 , function(a){
+  x <- rnorm(5)
+  max(x)})
+})
+
+stopCluster(cl)
+c
+```
+
+**Use replicate()**
+
+```{r}
+
+system.time({
+max_values <- replicate(3, max(rnorm(5)))
+})
+
+max_values
+
+```
+
+3 different methods were used to complete question 4 and compare the times taken. Parallel computing method - parLappy() recorded the highest time, followed by foreach() and lastly replicate().
