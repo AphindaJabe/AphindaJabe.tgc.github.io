@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Aphinda Jabe">
+
+<title>1&nbsp; Parallel Computing – Parallel Computing Assignment</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-70a47bd5681a7291082a5b9f83d58762.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="site_libs/tabwid-1.1.3/tabwid.css" rel="stylesheet">
+
+<script src="site_libs/tabwid-1.1.3/tabwid.js"></script>
+
+
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./Parallel Computing.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Parallel Computing</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Parallel Computing Assignment</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Parallel Computing Assignment</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Parallel Computing.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Parallel Computing</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#question-1" id="toc-question-1" class="nav-link active" data-scroll-target="#question-1"><span class="header-section-number">1.1</span> Question 1</a></li>
+  <li><a href="#question-2" id="toc-question-2" class="nav-link" data-scroll-target="#question-2"><span class="header-section-number">1.2</span> Question 2</a></li>
+  <li><a href="#question-3" id="toc-question-3" class="nav-link" data-scroll-target="#question-3"><span class="header-section-number">1.3</span> Question 3</a></li>
+  <li><a href="#question-4" id="toc-question-4" class="nav-link" data-scroll-target="#question-4"><span class="header-section-number">1.4</span> Question 4</a></li>
+  <li><a href="#question-5" id="toc-question-5" class="nav-link" data-scroll-target="#question-5"><span class="header-section-number">1.5</span> Question 5</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Parallel Computing</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Aphinda Jabe </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(foreach)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(doParallel)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parallel)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(iterators)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(flextable)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="question-1" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="question-1"><span class="header-section-number">1.1</span> Question 1</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>mean_vect <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">mean</span>(x))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>var_vect <span class="ot">&lt;-</span> <span class="cf">function</span>(x){</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">var</span>(x))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>rand_exp <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>, <span class="at">.combine =</span> rbind) <span class="sc">%do%</span> { </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  s <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">100</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="at">Mean =</span> <span class="fu">mean_vect</span>(s), <span class="at">Variance =</span> <span class="fu">var_vect</span>(s))</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">flextable</span>(<span class="fu">as.data.frame</span>(rand_exp))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div class="tabwid"><style>.cl-e71a23a8{}.cl-e6ecf0a4{font-family:'Arial';font-size:11pt;font-weight:normal;font-style:normal;text-decoration:none;color:rgba(0, 0, 0, 1.00);background-color:transparent;}.cl-e6ffbde2{margin:0;text-align:right;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);padding-bottom:5pt;padding-top:5pt;padding-left:5pt;padding-right:5pt;line-height: 1;background-color:transparent;}.cl-e70089a2{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 1.5pt solid rgba(102, 102, 102, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-e70089c0{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 0 solid rgba(0, 0, 0, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}.cl-e70089ca{width:0.75in;background-color:transparent;vertical-align: middle;border-bottom: 1.5pt solid rgba(102, 102, 102, 1.00);border-top: 0 solid rgba(0, 0, 0, 1.00);border-left: 0 solid rgba(0, 0, 0, 1.00);border-right: 0 solid rgba(0, 0, 0, 1.00);margin-bottom:0;margin-top:0;margin-left:0;margin-right:0;}</style><table data-quarto-disable-processing="true" class="cl-e71a23a8"><thead><tr style="overflow-wrap:break-word;"><th class="cl-e70089a2"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">Mean</span></p></th><th class="cl-e70089a2"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">Variance</span></p></th></tr></thead><tbody><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0610535</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.2333716</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9503903</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7302823</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9062110</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8335270</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9796037</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1017565</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8828910</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7727953</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9626431</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9537589</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8480681</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.6882418</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9705757</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9135251</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9034567</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.6273356</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8537411</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.6657721</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1388339</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1909719</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9496443</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0454200</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8752963</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8160532</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.2331536</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.2212845</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7683765</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.6447116</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1667556</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.2860912</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0167964</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.3853010</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7214418</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.4181387</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0470567</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9182017</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7944478</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.6770634</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8391505</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7503293</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0769863</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1747159</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9655604</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8868872</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8366520</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.5813842</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0462567</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1146746</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9147495</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8381077</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9619469</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.2573175</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9602698</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1783120</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0126982</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9414961</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0919462</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0624450</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0107588</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7452754</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8617277</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.6572746</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0245363</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0507415</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1595025</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">2.0650675</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1919433</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.3163601</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0593607</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.3876205</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9181834</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8555052</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0736909</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9458693</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8012578</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8320861</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9926057</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9576106</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1339413</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.3304365</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9352741</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9169810</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0336877</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9033151</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9034498</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9362194</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0960709</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.4866195</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9370880</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.2139379</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9301182</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.6681084</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9695450</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8363097</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9708715</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7428334</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1213562</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.5522949</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0279856</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.3047896</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0516546</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0471254</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9238085</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.5874925</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9639306</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0625176</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9425726</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.2275525</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9479202</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8816590</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9693728</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9792301</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9056813</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0105439</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0237743</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.2216600</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0595135</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1489431</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8312714</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7468417</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8668675</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.6515277</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9806813</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8776695</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8030849</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.5465965</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0256267</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0019968</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8785649</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8284412</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9485233</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8523532</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9086849</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1942194</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0604891</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7342934</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9057947</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.6903402</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9323068</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7730604</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0833361</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.4798856</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9094390</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7392502</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9148882</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.6806955</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0846165</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9349825</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1675859</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.3207657</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9657859</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1104210</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0102196</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8332572</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0419113</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0477528</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9758911</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7621285</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0521300</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0414693</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0851793</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0258735</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9582833</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7938573</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1109161</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9993121</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9632810</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7536520</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0696286</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.2089683</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9146556</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7167744</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8676115</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.7671506</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0725499</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0685234</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1005167</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0743915</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0462942</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.4460422</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0850922</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0657980</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0320024</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.4268872</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8567218</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.6420047</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.0510863</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8158695</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1085139</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9576655</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9394437</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8892107</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.8379501</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.5875085</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1854147</span></p></td><td class="cl-e70089c0"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.4159704</span></p></td></tr><tr style="overflow-wrap:break-word;"><td class="cl-e70089ca"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">0.9467091</span></p></td><td class="cl-e70089ca"><p class="cl-e6ffbde2"><span class="cl-e6ecf0a4">1.1117008</span></p></td></tr></tbody></table></div>
+</div>
+</div>
+</section>
+<section id="question-2" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="question-2"><span class="header-section-number">1.2</span> Question 2</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#|warning: false</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>clusts <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="dv">3</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(clusts)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>boot_result <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">1000</span>,<span class="at">.combine =</span> c, <span class="at">.packages =</span> <span class="st">'MASS'</span>) <span class="sc">%dopar%</span> { </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median</span>(<span class="fu">sample</span>(galaxies, <span class="at">size =</span> <span class="fu">length</span>(galaxies), <span class="at">replace =</span> <span class="cn">TRUE</span>))}</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   user  system elapsed 
+   0.55    0.06    1.44 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(clusts)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>boot_median <span class="ot">&lt;-</span> <span class="fu">mean</span>(boot_result)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>boot_median</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20865.1</code></pre>
+</div>
+</div>
+<p><strong>Testing with bigger chunks</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>clusts_2 <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="dv">3</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">registerDoParallel</span>(clusts_2)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>boot_result <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">i =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>,<span class="at">.combine =</span> c, <span class="at">.packages =</span> <span class="st">'MASS'</span>) <span class="sc">%dopar%</span> {</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">replicate</span>(<span class="dv">100</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median</span>(<span class="fu">sample</span>(galaxies, <span class="at">size =</span> <span class="fu">length</span>(galaxies), <span class="at">replace =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>)}</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   user  system elapsed 
+   0.01    0.00    0.31 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(clusts_2)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>boot_median <span class="ot">&lt;-</span> <span class="fu">mean</span>(boot_result)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>boot_median</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20873.42</code></pre>
+</div>
+</div>
+<p>Increasing the size of the chunks reduced the overheads, making it more efficient compared to running individual bootstrap iterations.</p>
+</section>
+<section id="question-3" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="question-3"><span class="header-section-number">1.3</span> Question 3</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>true_mean <span class="ot">=</span> <span class="dv">1</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>coverage <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, {</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>boot_s <span class="ot">&lt;-</span> <span class="fu">rexp</span>(<span class="dv">50</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>boot_means <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">1000</span>, </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(<span class="fu">sample</span>(boot_s, <span class="dv">50</span>, <span class="at">replace =</span> <span class="cn">TRUE</span>)))</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>CI <span class="ot">&lt;-</span> <span class="fu">quantile</span>(boot_means, <span class="at">probs =</span> <span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>))</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>(true_mean <span class="sc">&gt;=</span> CI[<span class="dv">1</span>]) <span class="sc">&amp;</span> (true_mean <span class="sc">&lt;=</span> CI[<span class="dv">2</span>])} )</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(coverage)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.948</code></pre>
+</div>
+</div>
+</section>
+<section id="question-4" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="question-4"><span class="header-section-number">1.4</span> Question 4</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>outcome <span class="ot">&lt;-</span> <span class="fu">foreach</span>(<span class="at">x =</span> <span class="fu">irnorm</span>(<span class="dv">5</span>, <span class="at">count =</span> <span class="dv">3</span>), <span class="at">.combine =</span> c) <span class="sc">%do%</span> {<span class="fu">max</span>(x)}</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   user  system elapsed 
+   0.02    0.00    0.00 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>outcome</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1.0844412 0.5060559 0.9594941</code></pre>
+</div>
+</div>
+</section>
+<section id="question-5" class="level2" data-number="1.5">
+<h2 data-number="1.5" class="anchored" data-anchor-id="question-5"><span class="header-section-number">1.5</span> Question 5</h2>
+<p><strong>Using the parLapply() to solve Q4</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>cl <span class="ot">&lt;-</span> <span class="fu">makeCluster</span>(<span class="dv">3</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>c <span class="ot">&lt;-</span> <span class="fu">parLapply</span>(cl, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span> , <span class="cf">function</span>(a){</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  x <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">5</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">max</span>(x)})</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   user  system elapsed 
+   0.00    0.00    0.02 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">stopCluster</span>(cl)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>c</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 1.228088
+
+[[2]]
+[1] 0.2688596
+
+[[3]]
+[1] 1.841409</code></pre>
+</div>
+</div>
+<p><strong>Use replicate()</strong></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">system.time</span>({</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>max_values <span class="ot">&lt;-</span> <span class="fu">replicate</span>(<span class="dv">3</span>, <span class="fu">max</span>(<span class="fu">rnorm</span>(<span class="dv">5</span>)))</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   user  system elapsed 
+      0       0       0 </code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>max_values</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.4158352 0.4595894 0.5747557</code></pre>
+</div>
+</div>
+<p>3 different methods were used to complete question 4 and compare the times taken. Parallel computing method - parLappy() recorded the highest time, followed by foreach() and lastly replicate().</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link" aria-label="Parallel Computing Assignment">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Parallel Computing Assignment</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
